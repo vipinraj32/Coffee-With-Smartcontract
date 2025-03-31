@@ -4,15 +4,22 @@ import { useState } from "react"
 import { ethers } from "ethers"
 import { Coffee, Wallet, CoffeeIcon, ArrowRight, Bean, Check, Loader2 } from "lucide-react"
 
+// Add type definition for window.ethereum
+declare global {
+  interface Window {
+    ethereum?: any
+  }
+}
+
 export default function Home() {
-  const [userAddress, setUserAddress] = useState("")
-  const [customerAddress, setCustomerAddress] = useState("")
-  const [coffeeBalance, setCoffeeBalance] = useState(0)
-  const [transactionStatus, setTransactionStatus] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [walletConnected, setWalletConnected] = useState(false)
-  const [showToast, setShowToast] = useState(false)
-  const [toastMessage, setToastMessage] = useState("")
+  const [userAddress, setUserAddress] = useState<string>("")
+  const [customerAddress, setCustomerAddress] = useState<string>("")
+  const [coffeeBalance, setCoffeeBalance] = useState<number>(0)
+  const [transactionStatus, setTransactionStatus] = useState<string>("")
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [walletConnected, setWalletConnected] = useState<boolean>(false)
+  const [showToast, setShowToast] = useState<boolean>(false)
+  const [toastMessage, setToastMessage] = useState<string>("")
 
   const abi = [
     "function giveCoffeeTo(address user_address) external returns (bool)",
@@ -21,7 +28,7 @@ export default function Home() {
 
   const contractAddress = "0x596f2105bb0330b91a414732009811b5a2f13111"
 
-  const displayToast = (message: any) => {
+  const displayToast = (message: string) => {
     setToastMessage(message)
     setShowToast(true)
     setTimeout(() => setShowToast(false), 3000)
@@ -91,8 +98,8 @@ export default function Home() {
     }
   }
 
-  // Truncate address for display
-  const truncateAddress = (address: any) => {
+  // Fix the address truncation function
+  const truncateAddress = (address: string): string => {
     if (!address) return ""
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
   }
